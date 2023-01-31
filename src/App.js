@@ -25,8 +25,25 @@ constructor() {
     imageUrl: '',
     box: {},
     route: 'SignIn',
-    isSignedIn: false
+    isSignedIn: false,
+    user: {
+      id: '',
+      name: '',
+      email: '',
+      entries: 0,
+      joined: ''
+    }
   }
+}
+
+loadUser = (data) => {
+  this.setState({user: {
+    id: data.id,
+    name: data.name,
+    email: data.email,
+    entries: data.entries,
+    joined: data.joined
+  }})
 }
 
 calculateFaceLocation = (data) => {
@@ -50,7 +67,7 @@ onInputChange = (event) => {
   this.setState({input: event.target.value});
 }
 
-onButtonSubmit = () => {
+onPictureSubmit = () => {
   this.setState({imageUrl: this.state.input});
   
     const raw = JSON.stringify({ 
@@ -68,7 +85,6 @@ onButtonSubmit = () => {
             }
         ]
     });
-
     const requestOptions = {
         method: 'POST',
         headers: {
@@ -78,46 +94,62 @@ onButtonSubmit = () => {
         body: raw
     };
 
-    // NOTE: MODEL_VERSION_ID is optional, you can also call prediction with the MODEL_ID only
-    // https://api.clarifai.com/v2/models/{YOUR_MODEL_ID}/outputs
-    // this will default to the latest version_id
-
     fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", requestOptions)
         .then(response => response.json())
-        .then(result => this.displayFaceBox(this.calculateFaceLocation(result)))
+        .then(response => {
+          if(response) {
+            fetch('http://localhost:3000/image', {
+              method: 'put',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                id: this.state.user.id
+              })
+            })
+            .then(response => response.json())
+            .then(count => {
+              this.setState(Object.assign(this.state.user, {entries: count}))
+            })
+            //.catch(console.log);
+          }
+        this.displayFaceBox(this.calculateFaceLocation(response))
+        })
         .catch(error => console.log('error', error));
-  }
+}
 
-  onRouteChange = (route) => {
-    if (route === 'signout') {
-      this.setState({isSignedIn: false})
-    } else if (route === 'home') {
-      this.setState({isSignedIn: true})
-    }
-    this.setState({route: route});
-  }
 
-  render() {
-    const { isSignedIn, imageUrl, route, box } = this.state;
-    return (
-      <div className="App">
-        <ParticlesBg color="#ffffff" num={150} type="cobweb" bg={true} />
-        <Navigation isSignedIn = {isSignedIn} onRouteChange = {this.onRouteChange} />
-        { route === 'home' 
-          ? <div>
-              <Logo />
-              <Rank />
-              <ImageLinkForm 
-                onInputChange = {this.onInputChange}
-                onButtonSubmit = {this.onButtonSubmit}
-              />
-              <FaceRecognition box = {box} imageUrl = {imageUrl}/>
-            </div>
-          : ( 
-            route === 'SignIn'
-            ? <SignIn onRouteChange = {this.onRouteChange} />
-            : <Register onRouteChange = {this.onRouteChange} />
-            ) 
+onRouteChange = (route) => {
+  if (route === 'signout') {
+    this.setState({isSignedIn: false})
+  } else if (route === 'home') {
+    this.setState({isSignedIn: true})
+  }
+  this.setState({route: route});
+}
+
+render() {
+  const { isSignedIn, imageUrl, route, box } = this.state;
+  return (
+    <div className="App">
+      <ParticlesBg color="#ffffff" num={150} type="cobweb" bg={true} />
+      <Navigation isSignedIn = {isSignedIn} onRouteChange = {this.onRouteChange} />
+      { route === 'home' 
+        ? <div>
+            <Logo />
+            <Rank 
+              name = {this.state.user.name} 
+              entries = {this.state.user.entries}
+            />
+            <ImageLinkForm 
+              onInputChange = {this.onInputChange}
+              onPictureSubmit = {this.onPictureSubmit}
+            />
+            <FaceRecognition box = {box} imageUrl = {imageUrl}/>
+          </div>
+        : ( 
+          route === 'SignIn'
+          ? <SignIn loadUser = {this.loadUser} onRouteChange = {this.onRouteChange} />
+          : <Register loadUser = {this.loadUser} onRouteChange = {this.onRouteChange} />
+          ) 
         }
       </div>
     );
