@@ -9,15 +9,6 @@ import SignIn from './components/SignIn/SignIn';
 import Register from './components/Register/Register';
 import ParticlesBg from 'particles-bg'
 
-/*USER_ID = 'ityojvw8axin';
-//Your PAT (Personal Access Token) can be found in the portal under Authentification:
-const PAT = '8923f51c9fa74259a186d350d25893fa';
-
-const APP_ID = 'eb407230b0164b2aaa22e9996628d533';
-// Change these to whatever model and image URL you want to use:
-const MODEL_ID = 'face-detection';
-const MODEL_VERSION_ID = '6dc7e46bc9124c5c8824be4822abe105';*/
-
 const initialState = {
   input: '',
   imageUrl: '',
