@@ -9,32 +9,36 @@ import SignIn from './components/SignIn/SignIn';
 import Register from './components/Register/Register';
 import ParticlesBg from 'particles-bg'
 
-const USER_ID = 'ityojvw8axin';
-// Your PAT (Personal Access Token) can be found in the portal under Authentification:
+/*USER_ID = 'ityojvw8axin';
+//Your PAT (Personal Access Token) can be found in the portal under Authentification:
 const PAT = '8923f51c9fa74259a186d350d25893fa';
+
 const APP_ID = 'eb407230b0164b2aaa22e9996628d533';
 // Change these to whatever model and image URL you want to use:
 const MODEL_ID = 'face-detection';
-const MODEL_VERSION_ID = '6dc7e46bc9124c5c8824be4822abe105';
+const MODEL_VERSION_ID = '6dc7e46bc9124c5c8824be4822abe105';*/
+
+const initialState = {
+  input: '',
+  imageUrl: '',
+  box: {},
+  route: 'SignIn',
+  isSignedIn: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: ''
+  }
+}
 
 class App extends Component {
 constructor() {
   super();
-  this.state = {
-    input: '',
-    imageUrl: '',
-    box: {},
-    route: 'SignIn',
-    isSignedIn: false,
-    user: {
-      id: '',
-      name: '',
-      email: '',
-      entries: 0,
-      joined: ''
-    }
+  this.state = initialState;
   }
-}
+
 
 loadUser = (data) => {
   this.setState({user: {
@@ -70,32 +74,14 @@ onInputChange = (event) => {
 onPictureSubmit = () => {
   this.setState({imageUrl: this.state.input});
   
-    const raw = JSON.stringify({ 
-        "user_app_id": {
-            "user_id": USER_ID,
-            "app_id": APP_ID
-        },
-        "inputs": [
-            {
-                "data": {
-                    "image": {
-                        "url": this.state.input
-                    }
-                }
-            }
-        ]
-    });
-    const requestOptions = {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Key ' + PAT
-        },
-        body: raw
-    };
-
-    fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", requestOptions)
-        .then(response => response.json())
+    fetch('http://localhost:3000/imageUrl', {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        input: this.state.input
+      })
+    })
+      .then(response => response.json())
         .then(response => {
           if(response) {
             fetch('http://localhost:3000/image', {
@@ -109,17 +95,15 @@ onPictureSubmit = () => {
             .then(count => {
               this.setState(Object.assign(this.state.user, {entries: count}))
             })
-            //.catch(console.log);
           }
         this.displayFaceBox(this.calculateFaceLocation(response))
         })
-        .catch(error => console.log('error', error));
+        .catch(err => console.log('error', err));
 }
-
 
 onRouteChange = (route) => {
   if (route === 'signout') {
-    this.setState({isSignedIn: false})
+    this.setState(initialState)
   } else if (route === 'home') {
     this.setState({isSignedIn: true})
   }
