@@ -65,7 +65,7 @@ onInputChange = (event) => {
 onPictureSubmit = () => {
   this.setState({imageUrl: this.state.input});
   
-    fetch('http://localhost:3000/imageUrl', {
+    fetch('https://smartbrain-api-3eff.onrender.com/imageUrl', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -75,7 +75,7 @@ onPictureSubmit = () => {
       .then(response => response.json())
         .then(response => {
           if(response) {
-            fetch('http://localhost:3000/image', {
+            fetch('https://smartbrain-api-3eff.onrender.com/image', {
               method: 'put',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({
