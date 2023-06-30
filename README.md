@@ -4,6 +4,6 @@ Throughout the development process, I gained valuable insights into the seamless
 
 The front-end code for this app can be found in this repository. For the back-end code, please [click here](https://github.com/Kingtim11/SmartBrain-API).
 
-Technologies used for the Front-End:
-  * [React](https://reactjs.org/) - A front-end JavaScript library for building user interfaces based on components.
-  * [Tachyons](https://tachyons.io/) - A CSS toolkit that provides a set of predefined CSS classes for fast and           responsive styling.
+Technologies utilised for the Front-End:
+  * [React](https://reactjs.org/): A front-end JavaScript library for building user interfaces based on components.
+  * [Tachyons](https://tachyons.io/): A CSS toolkit that provides a set of predefined CSS classes for fast and           responsive styling.
