@@ -3,5 +3,5 @@ SmartBrain is a fully responsive App that was developed using React and NodeJS a
 The front-end code for this app can be found in this repository. For the back-end code, please [click here](https://github.com/Kingtim11/SmartBrain-API).
 
 Technologies used for the Front-End:
-*React: A JavaScript library for building user interfaces on the front-end.
-*Tachyons: A CSS toolkit that provides a set of predefined CSS classes for fast and responsive styling.
+  * [React](https://reactjs.org/) - A JavaScript library for building user interfaces on the front-end.
+  * [Tachyons](https://tachyons.io/) - A CSS toolkit that provides a set of predefined CSS classes for fast and           responsive styling.
