@@ -1,4 +1,6 @@
-SmartBrain is a fully responsive App that was developed using React and NodeJS as part of Andrei Neagoie's ZeroToMastery course 'The Complete Web Developer'. The app implements an advanced image recognition system utilising AI technology to accurately detect and identify faces in uploaded pictures.This app was a great learning experience as it allowed me to understand the connection between front-end and back-end development. It also allowed me to experience the lifecycle of an app from design to deployment.
+SmartBrain is a fully responsive App that was developed using React and NodeJS as part of Andrei Neagoie's ZeroToMastery course 'The Complete Web Developer'. The app implements an advanced image recognition system utilising AI technology to accurately detect and identify faces in uploaded pictures.
+
+This was a great learning experience as it allowed me to understand the connection between front-end and back-end development. It also allowed me to experience the lifecycle of an app from design to deployment.
 
 The front-end code for this app can be found in this repository. For the back-end code, please [click here](https://github.com/Kingtim11/SmartBrain-API).
 
